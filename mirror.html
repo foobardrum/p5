@@ -1,0 +1,32 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+        <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
+      <style> body {padding: 0; margin: 0;} </style>
+
+</head>
+
+<body>
+<script>
+
+var capture;
+
+function setup() {
+  createCanvas(390, 240);
+  capture = createCapture(VIDEO);
+  capture.size(320, 240);
+  //capture.hide();
+}
+
+function draw() {
+  background(255);
+  image(capture, 0, 0, 320, 240);
+  filter('INVERT');
+}
+
+</script>
+</body>
+</html>

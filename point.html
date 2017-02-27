@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+    <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
+      <style> body {padding: 0; margin: 0;} </style>
+
+</head>
+
+<body>
+<div id="slider"></div>
+<div id= "canvas"></div>
+<div id="button"></div>
+<script>
+  var img;
+  var y = 0;
+  var increment_slider;
+  var incr;
+  var button;
+  function preload(){
+    // img = loadImage("/p5/tobi.jpg");
+    // img = loadImage("/p5/fluss.jpg");
+    // img = loadImage("/p5/schuh.jpg");
+    img = loadImage("/p5/winter.jpg");
+    // img = loadImage("/p5/moonwalk.jpg");
+  }
+
+  function setup(){
+    button = createButton('Bild Speichern');
+    button.parent(select('#button'));
+    increment_slider = createSlider(3,img.width/30,(3+img.width/30)/2,1);
+    increment_slider.parent(select('#slider'));
+    increment_slider.style('width', '300px');
+    var cnv = createCanvas(img.width,img.height);
+    cnv.parent(select('#canvas'));
+    imageMode(CENTER);
+    noStroke();
+    background(255);
+    img.loadPixels();
+    button.mousePressed(savePic);
+  }
+  function draw(){
+    clear();
+    background(255);
+    incr = increment_slider.value();
+    while (y < img.height){
+      var x = 0;
+      while (x < img.width){
+        var indx = 4*(x+img.width*y);
+        var r = img.pixels[indx];
+        var g = img.pixels[indx+1];
+        var b = img.pixels[indx+2];
+        fill(r,g,b);
+        ellipse(x,y,incr,incr);
+        x += incr;
+      }
+      y += incr;
+    }
+    x = 0;
+    y = 0;
+  }
+
+  function savePic(){
+    saveCanvas('pic','jpg')
+  }
+</script>
+
+
+</body>
+</html>

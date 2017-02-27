@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+      <style> body {padding: 0; margin: 0;} </style>
+
+</head>
+<body>
+<script>
+var cells = [];
+var cell_width = 100;
+var amount_x = 3;
+var amount_y = amount_x;
+function setup(){
+  createCanvas(600,600);
+  background(20);
+  for (var i = 0; i < amount_y; i++){
+    for (var j = 0; j < amount_x; j++){
+      cells.push(new Cell(i*cell_width, j*cell_width, i, j));
+    }
+  }
+}
+function draw(){
+  for (var i = 0; i < cells.length; i++){
+    cells[i].show();
+  }
+}
+
+function Cell(x,y, i, j){
+  this.x = x;
+  this.y = y;
+  this.width = cell_width;
+  this.i = i;
+  this.j = j;
+  if (this.i == 0 && this.j == 0){
+    this.borders = [false, true, true, false];
+  }else if (this.i == 0 && this.j == 1) {
+    this.borders = [false, true, true, true];
+  }else if (this.i == 0 && this.j == 2) {
+    this.borders = [false, false, true, true];
+  }else if (this.i == 1 && this.j == 0) {
+    this.borders = [true, true, true, false];
+  }else if (this.i== 1 && this.j == 1){
+    this.borders = [true, true, true, true];
+  }else if (this.i == 1 && this.j == 2) {
+    this.borders = [true, false, true, true];
+  }else if (this.i == 2 && this.j == 0) {
+    this.borders = [true, true, false, false];
+  }else if (this.i == 2 && this.j == 1) {
+    this.borders = [true, true, false, true];
+  }else if (this.i == 2 && this.j == 2) {
+    this.borders = [true, false, false, true];
+  }
+
+  this.show = function(){
+    stroke(255)
+    if (this.borders[0] == true){
+      beginShape(LINES);
+      vertex(this.x, this.y);
+      vertex(this.x+this.width, this.y);
+      endShape();
+    }
+    if (this.borders[1] == true){
+      beginShape(LINES);
+      vertex(this.x+this.width, this.y);
+      vertex(this.x+this.width, this.y+this.width);
+      endShape();
+    }
+    if (this.borders[2] == true){
+      beginShape(LINES);
+      vertex(this.x+this.width, this.y+this.width);
+      vertex(this.x, this.y+this.width);
+      endShape();
+    }
+    if (this.borders[3] == true){
+      beginShape(LINES);
+      vertex(this.x, this.y+this.width);
+      vertex(this.x, this.y);
+      endShape();
+    }
+    noStroke()
+    noFill()
+    //rect(this.x, this.y, this.width, this.width);
+  }
+}
+
+</script>
+</body>
+</html>
