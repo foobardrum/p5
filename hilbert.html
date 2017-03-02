@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+      <style> body {padding: 0; margin: 0;} </style>
+
+</head>
+<body>
+<script>
+//bottom line left to right
+function L1(x0,y0,dx,dy){
+	this.p1 = createVector(x0+dx/2, y0+dy/2);
+	this.p2 = createVector(x0+3*dx/2, y0+dy/2);
+	this.p3 = createVector(x0+5*dx/2, y0+dy/2);
+  vertex(this.p1.x, this.p1.y);
+  vertex(this.p2.x, this.p2.y);
+  vertex(this.p3.x, this.p3.y);
+}
+//bottom line right to left
+function L1a(x0,y0,dx,dy){
+	this.p1 = createVector(x0+5*dx/2, y0+dy/2);
+	this.p2 = createVector(x0+3*dx/2, y0+dy/2);
+	this.p3 = createVector(x0+dx/2, y0+dy/2);
+  vertex(this.p1.x, this.p1.y);
+  vertex(this.p2.x, this.p2.y);
+  vertex(this.p3.x, this.p3.y);
+
+}
+//middle line right to left
+function L2(x0,y0,dx,dy){
+	this.p1 = createVector(x0+5*dx/2, y0+3*dy/2);
+	this.p2 = createVector(x0+3*dx/2, y0+3*dy/2);
+	this.p3 = createVector(x0+dx/2, y0+3*dy/2);
+  vertex(this.p1.x, this.p1.y);
+  vertex(this.p2.x, this.p2.y);
+  vertex(this.p3.x, this.p3.y);
+}
+//middle line left to right
+function L2a(x0,y0,dx,dy){
+	this.p1 = createVector(x0+dx/2, y0+3*dy/2);
+	this.p2 = createVector(x0+3*dx/2, y0+3*dy/2);
+	this.p3 = createVector(x0+5*dx/2, y0+3*dy/2);
+  vertex(this.p1.x, this.p1.y);
+  vertex(this.p2.x, this.p2.y);
+  vertex(this.p3.x, this.p3.y);
+}
+//top line left to right
+function L3(x0,y0,dx,dy){
+	this.p1 = createVector(x0+dx/2, y0+5*dy/2);
+	this.p2 = createVector(x0+3*dx/2, y0+5*dy/2);
+	this.p3 = createVector(x0+5*dx/2, y0+5*dy/2);
+  vertex(this.p1.x, this.p1.y);
+  vertex(this.p2.x, this.p2.y);
+  vertex(this.p3.x, this.p3.y);
+}
+//top line right to left
+function L3a(x0,y0,dx,dy){
+	this.p1 = createVector(x0+5*dx/2, y0+5*dy/2);
+	this.p2 = createVector(x0+3*dx/2, y0+5*dy/2);
+	this.p3 = createVector(x0+dx/2, y0+5*dy/2);
+  vertex(this.p1.x, this.p1.y);
+  vertex(this.p2.x, this.p2.y);
+  vertex(this.p3.x, this.p3.y);
+}
+//S from bottom to top
+function A(x0,y0,dx,dy) {
+  L1(x0,y0,dx,dy);
+	L2(x0,y0,dx,dy);
+	L3(x0,y0,dx,dy);
+}
+// //Z from top to bottom
+// function B(x0,y0,dx,dy){
+// 	L3(x0,y0,dx,dy);
+// 	L2(x0,y0,dx,dy);
+// 	L1(x0,y0,dx,dy);
+// }
+// function C(x0,y0,dx,dy){
+// 	L3a(x0,y0,dx,dy);
+// 	L2a(x0,y0,dx,dy);
+// 	L1a(x0,y0,dx,dy);
+// }
+// function D(x0,y0,dx,dy){
+// 	L1a(x0,y0,dx,dy);
+// 	L2a(x0,y0,dx,dy);
+// 	L3a(x0,y0,dx,dy);
+// }
+
+function drawHilbertCurveII(x0, y0, xm, ym, iter){
+  var dx, dy;
+	dx = (xm-x0)/3;
+	dy = (ym-y0)/3;
+  noFill();
+  stroke(255);
+  console.log(iter, x0, y0, xm, ym);
+  if (iter > 1){
+    		drawHilbertCurveII(x0,-y0,x0+dx,-(y0+dy),iter-1);
+    		drawHilbertCurveII(x0+dx,-(y0+dy),x0+2*dx,-y0,iter-1);
+    		drawHilbertCurveII(x0+2*dx,-y0,x0+3*dx,-(y0+dy),iter-1);
+    		drawHilbertCurveII(x0+3*dx,-(y0+dy),x0+2*dx,-(y0+2*dy),iter-1);
+    		drawHilbertCurveII(x0+2*dx,-(y0+2*dy),x0+dx,-(y0+dy),iter-1);
+    		drawHilbertCurveII(x0+dx,-(y0+dy),x0,-(y0+2*dy),iter-1);
+    		drawHilbertCurveII(x0,-(y0+2*dy),x0+dx,-(y0+3*dy),iter-1);
+    		drawHilbertCurveII(x0+dx,-(y0+3*dy),x0+2*dx,-(y0+2*dy),iter-1);
+    		drawHilbertCurveII(x0+2*dx,-(y0+2*dy),x0+3*dx,-(y0+3*dy),iter-1);
+  }else{
+  A(x0,y0,dx,dy);
+  }
+}
+function setup(){
+  createCanvas(600,600);
+  background(51);
+  translate(0, 600);
+  beginShape();
+  drawHilbertCurveII( 0, 0, 600, 600, 3);
+  endShape();
+}
+</script>
+</body>
+</html>
