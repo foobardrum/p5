@@ -5,28 +5,38 @@
     <title>Document</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+    <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
       <style> body {padding: 0; margin: 0;} </style>
 
 </head>
 <body>
+  <div id= "canvas"></div>
+  <div id="button"></div>
+  <div id="info"></div>
 <script>
 var cells = [];
 var cell_width = 100;
 var amount_x = 3;
 var amount_y = 3;
 var count = 1;
+var button;
+var cnv;
+var info;
+var infotext ="Kreis beginnt";
+
 function setup(){
-  createCanvas(amount_x*cell_width,amount_y*cell_width);
-  background(20);
-  for (var i = 0; i < amount_y; i++){
-    for (var j = 0; j < amount_x; j++){
-      cells.push(new Cell(i*cell_width, j*cell_width, i, j));
-    }
-  }
+  reset();
 }
 function draw(){
   for (var i = 0; i < cells.length; i++){
     cells[i].show();
+    check();
+  }
+  info.html(infotext);
+  if (count%2 == 0){
+    infotext ="Kreuz ist am Zug!";
+  } else{
+    infotext ="Kreis ist am Zug!";
   }
 }
 function mouseClicked() {
@@ -41,6 +51,48 @@ function mouseClicked() {
       cells[i].clicked = true;
     }
   }
+}
+function reset(){
+  noLoop();
+  clear();
+  removeElements();
+  count = 1;
+  button = createButton("Reset");
+  button.parent(select('#button'));
+  cnv = createCanvas(amount_x*cell_width,amount_y*cell_width);
+  cnv.parent(select('#canvas'));
+  infotext = "Kreis beginnt";
+  info = createP(infotext);
+  info.parent(select('#info'));
+  background(20);
+  cells = [];
+  for (var i = 0; i < amount_y; i++){
+    for (var j = 0; j < amount_x; j++){
+      cells.push(new Cell(i*cell_width, j*cell_width, i, j));
+    }
+  }
+  button.mousePressed(reset);
+  loop();
+}
+function win(i){
+  noLoop();
+  if (cells[i].val == 1){
+    infotext="Kreuz gewinnt!";
+  }else{
+    infotext="Kreis gewinnt!";
+  }
+}
+function check(){
+  for (var i = 0; i < 3; i++){
+    if (cells[3*i].val != 0 && (cells[3*i].val == cells[3*i+1].val && cells[3*i].val == cells [3*i+2].val)){
+      win(i);
+    }else if (cells[i].val != 0 && (cells[i].val == cells[i+3].val && cells[i].val == cells [i+6].val)){
+      win(i);
+    }else if (cells[4].val != 0 && ((cells[2].val == cells[4].val && cells[4] == cells[6].val)||(cells[0].val == cells[4].val && cells[0].val == cells[8].val))){
+      win(4);
+    }
+  }
+
 }
 function Cell(x,y, i, j){
   this.x = x;
