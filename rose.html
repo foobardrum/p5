@@ -11,16 +11,25 @@
 </head>
 <body>
 <script>
-var x, y, k, n, d;
+var x, y, k, n, d,col;
 var offset = 300;
+var count =0;
+var currentHue;
+var hueSpeed = 1;
+var currentAlpha = 0;
 
 function setup(){
   createCanvas(600,600);
   background(20);
   n = sqrt(2);
   d = 1;
+  currentHue = random(255);
 }
 function draw(){
+  currentHue += hueSpeed;
+  if (currentHue > 255 || currentHue <=0) {
+    hueSpeed = hueSpeed *-1;
+  }
   if (mouseIsPressed){
   var distX = mouseX-300;
   var distY = mouseY-300;
@@ -29,13 +38,42 @@ function draw(){
   }
   k = n/d;
   background(20);
-  for(var angle = 0; angle<100; angle += 0.01){
+  push();
+  colorMode(HSB);
+  beginShape();
+  strokeWeight(1);
+  noFill();
+  for(var angle = 0; angle < 100; angle += 0.01){
     x = cos(k*angle)*cos(angle)*200;
     y = cos(k*angle)*sin(angle)*200;
-    strokeWeight(2);
-    stroke(255);
-    point(x+offset,y+offset);
+
+    // if (count <= 30){
+
+// currentHue += hueSpeed/10;
+// if (currentHue > 255 || currentHue <=0) {
+//   hueSpeed = hueSpeed *-1;
+// }
+// stroke(currentHue,255,255);
+
+    //  stroke(0, random(100,255), random(100,255));
+    //} else if (count <= 60){
+
+  stroke(currentHue,255,255);
+
+    //   var distance = dist(0,0,x,y);
+    //   var col = map(distance,0,300,0,1);
+    //   stroke(0, 255-col*255+count, col*255+count);
+    // }else if (count < 90){
+    //   stroke(255/angle+10, 100+angle, 255-angle);
+    // }else{
+    //   count = 0;
+    // }
+    vertex(x+offset, y+offset);
   }
+  endShape();
+   colorMode(RGB);
+  count+=1;
+  pop();
 }
 
 </script>
